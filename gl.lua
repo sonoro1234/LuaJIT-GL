@@ -8882,6 +8882,9 @@ local gl, glu
 if ffi.os == "Windows" then
 	gl = ffi.load("opengl32")
 	glu = ffi.load("glu32")
+elseif ffi.os == "OSX" then
+	gl = ffi.load("/System/Library/Frameworks/OpenGL.framework/OpenGL")
+	glu = ffi.load("/System/Library/Frameworks/OpenGL.framework/OpenGL")
 else
 	gl = ffi.load("libGL.so.1")
 	glu = ffi.load("libGLU.so.1")
