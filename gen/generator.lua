@@ -138,6 +138,7 @@ for line in location(pipe,{"gl.-","khrplatform"},defines) do
 	line = line:gsub("__attribute__%(%(dllimport%)%) ", '')
 	line = line:gsub("%( %*","%(%*")
 	line = line:gsub("typedef khronos_ssize_t","typedef ssize_t")
+	line = line:gsub("GL_APIENTRY",'')
 	table.insert(cdefs,line)
 end
 pipe:close()
