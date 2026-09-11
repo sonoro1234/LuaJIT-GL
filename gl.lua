@@ -9049,18 +9049,22 @@ function Lib.set_loader(loader)
 	end
 end
 
+local inBegin
 -- for following every gl or glext function call with glGetError
 function Lib.glErrorWrap(ll)
 	return setmetatable({glGetError=gl.glGetError},{
 		__index = function(self,k)
 			return function(...)
+				if k=="glBegin" then inBegin = true end
+				if k=="glEnd" then assert(inBegin); inBegin = false end
 				local ret = ll[k](...)
-				local err = gl.glGetError()
-				if(err ~= glc.GL_NO_ERROR) then print(k,...);error("gl error:"..err,2) end
+				if not inBegin then
+					local err = gl.glGetError()
+					if(err ~= glc.GL_NO_ERROR) then print(k,...);error("gl error:"..err,2) end
+				end
 				return ret
 			end
 		end
 	})
 end
-
 return Lib
